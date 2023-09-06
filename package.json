@@ -1,0 +1,26 @@
+{
+  "name": "oeffentliche-ausschreibung-rss-feed",
+  "version": "1.0.0",
+  "description": "oeffentliche aussschreibung",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ogchectoco/rss-feed-oeffentliche-ausschreibung.git"
+  },
+  "keywords": [
+    "rss-feed"
+  ],
+  "author": "leonhard kleinfeld",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ogchectoco/rss-feed-oeffentliche-ausschreibung/issues"
+  },
+  "homepage": "https://github.com/ogchectoco/rss-feed-oeffentliche-ausschreibung#readme",
+  "dependencies": {
+    "puppeteer": "^21.1.1",
+    "rss": "^1.2.2"
+  }
+}
