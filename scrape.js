@@ -1,6 +1,4 @@
 const puppeteer = require('puppeteer');
-const RSS = require('rss');
-const fs = require('fs');
 
 async function scrapeWebsite() {
   const browser = await puppeteer.launch();
@@ -14,12 +12,13 @@ async function scrapeWebsite() {
     rows.forEach(row => {
       const cells = row.querySelectorAll('td');
       if (cells.length === 6) {
-        const publishedDate = cells[0].querySelector('abbr').title;
-        const deadlineDate = cells[1].querySelector('abbr').title;
+        const publishedDate = cells[0].querySelector('abbr')?.title;
+        const deadlineDate = cells[1].querySelector('abbr')?.title;
         const description = cells[2].innerText.trim();
         const type = cells[3].innerText.trim();
         const publisher = cells[4].innerText.trim();
-        const actionLink = cells[5].querySelector('a').getAttribute('href');
+        const actionLinkScript = cells[5].querySelector('a')?.getAttribute('href');
+        const actionLink = actionLinkScript ? actionLinkScript.match(/'(.*?)'/)[1] : ''; 
 
         tenders.push({
           publishedDate,
@@ -35,28 +34,8 @@ async function scrapeWebsite() {
     return tenders;
   });
 
-  const feed = new RSS({
-    title: 'Ihr Feed-Titel',
-    description: 'Beschreibung des Feeds',
-    feed_url: 'http://example.com/rss.xml',
-    site_url: 'http://example.com',
-  });
-
-  tenders.forEach(tender => {
-    feed.item({
-      title: tender.description,
-      description: `Typ: ${tender.type}, Veröffentlicher: ${tender.publisher}`,
-      url: tender.actionLink,
-      date: tender.publishedDate,
-    });
-  });
-
-  const xml = feed.xml();
-
-  // Speichern Sie den RSS-Feed in einer XML-Datei
-  fs.writeFileSync('feed.xml', xml);
-
   await browser.close();
+  return tenders;
 }
 
-scrapeWebsite();
+module.exports = scrapeWebsite;
